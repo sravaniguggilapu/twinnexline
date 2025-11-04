@@ -35,8 +35,8 @@ const LineDashboard = () => {
   }, [lineData]);
 
   const prepareChartData = () => {
-    // Energy vs Output data - sample every 50 records for performance
-    const step = Math.max(1, Math.floor(lineData.length / 100));
+    // Energy vs Output data - use more data points (sample every 10-20 records)
+    const step = Math.max(1, Math.floor(lineData.length / 200));
     const energyData = lineData
       .filter((_, idx) => idx % step === 0)
       .map((row, idx) => ({
