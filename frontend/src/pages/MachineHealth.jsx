@@ -37,8 +37,8 @@ const MachineHealth = () => {
   }, [machineData]);
 
   const prepareChartData = () => {
-    // Sample data for performance - take every Nth record
-    const step = Math.max(1, Math.floor(machineData.length / 100));
+    // Use more data points for detailed machine analysis
+    const step = Math.max(1, Math.floor(machineData.length / 150));
     const sampledData = machineData.filter((_, idx) => idx % step === 0);
 
     // Temperature data
