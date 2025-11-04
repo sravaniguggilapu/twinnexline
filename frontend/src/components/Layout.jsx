@@ -126,21 +126,9 @@ const Layout = ({ children }) => {
             </div>
             <div>
               <h4 className="text-white font-semibold mb-4">About</h4>
-              <p className="text-slate-400 text-sm mb-4">
+              <p className="text-slate-400 text-sm">
                 Digital twin technology for real-time monitoring and optimization of manufacturing operations.
               </p>
-              <a 
-                href="https://emergent.sh" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-sm font-semibold rounded-lg hover:from-cyan-600 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-cyan-500/50"
-              >
-                <span>Made with</span>
-                <span className="font-bold">Emergent</span>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </a>
             </div>
           </div>
           <div className="border-t border-slate-800 mt-8 pt-6 text-center">
