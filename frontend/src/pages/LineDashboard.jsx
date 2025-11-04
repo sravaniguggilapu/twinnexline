@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { useData } from '../context/DataContext';
-import Plotly from 'plotly.js-dist-min';
+import { LineChart, Line, BarChart, Bar, ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, AreaChart } from 'recharts';
 import { Activity, AlertTriangle, Zap, TrendingUp } from 'lucide-react';
 
 const LineDashboard = () => {
@@ -10,11 +10,7 @@ const LineDashboard = () => {
   const [selectedLine, setSelectedLine] = useState('All');
   const [lineData, setLineData] = useState([]);
   const [lines, setLines] = useState([]);
-  
-  const energyChartRef = useRef(null);
-  const productionChartRef = useRef(null);
-  const efficiencyChartRef = useRef(null);
-  const comparisonChartRef = useRef(null);
+  const [chartData, setChartData] = useState({ energy: [], comparison: [], anomaly: [] });
 
   useEffect(() => {
     if (data && data.length > 0) {
@@ -34,211 +30,45 @@ const LineDashboard = () => {
 
   useEffect(() => {
     if (lineData.length > 0) {
-      renderCharts();
+      prepareChartData();
     }
   }, [lineData]);
 
-  const renderCharts = () => {
-    // Energy vs Output Chart
-    const energyTrace = {
-      x: lineData.map((_, idx) => idx + 1),
-      y: lineData.map(row => parseFloat(row.Energy_Consumed_kWh)),
-      type: 'scatter',
-      mode: 'lines+markers',
-      name: 'Energy (kWh)',
-      line: { color: '#22d3ee', width: 2 },
-      marker: { size: 6 }
-    };
+  const prepareChartData = () => {
+    // Energy vs Output data - sample every 50 records for performance
+    const step = Math.max(1, Math.floor(lineData.length / 100));
+    const energyData = lineData
+      .filter((_, idx) => idx % step === 0)
+      .map((row, idx) => ({
+        record: idx + 1,
+        energy: parseFloat(row.Energy_Consumed_kWh),
+        production: parseFloat(row.Units_Produced),
+        efficiency: parseFloat(row.Efficiency_Score)
+      }));
 
-    const productionTrace = {
-      x: lineData.map((_, idx) => idx + 1),
-      y: lineData.map(row => parseFloat(row.Units_Produced)),
-      type: 'scatter',
-      mode: 'lines+markers',
-      name: 'Units Produced',
-      yaxis: 'y2',
-      line: { color: '#10b981', width: 2 },
-      marker: { size: 6 }
-    };
-
-    const energyLayout = {
-      title: {
-        text: 'Energy Consumption vs Production Output',
-        font: { color: '#e2e8f0', size: 18 }
-      },
-      paper_bgcolor: 'rgba(30, 41, 59, 0.5)',
-      plot_bgcolor: 'rgba(30, 41, 59, 0.3)',
-      xaxis: {
-        title: 'Record Number',
-        gridcolor: '#334155',
-        color: '#94a3b8'
-      },
-      yaxis: {
-        title: 'Energy (kWh)',
-        gridcolor: '#334155',
-        color: '#22d3ee'
-      },
-      yaxis2: {
-        title: 'Units Produced',
-        overlaying: 'y',
-        side: 'right',
-        gridcolor: '#334155',
-        color: '#10b981'
-      },
-      legend: {
-        font: { color: '#e2e8f0' },
-        bgcolor: 'rgba(30, 41, 59, 0.8)'
-      },
-      margin: { t: 50, r: 80, b: 50, l: 80 }
-    };
-
-    Plotly.newPlot(energyChartRef.current, [energyTrace, productionTrace], energyLayout, { responsive: true });
-
-    // Efficiency Trend Chart
-    const efficiencyTrace = {
-      x: lineData.map((_, idx) => idx + 1),
-      y: lineData.map(row => parseFloat(row.Efficiency_Score)),
-      type: 'scatter',
-      mode: 'lines',
-      fill: 'tozeroy',
-      line: { color: '#22d3ee', width: 2 },
-      fillcolor: 'rgba(34, 211, 238, 0.2)'
-    };
-
-    const efficiencyLayout = {
-      title: {
-        text: 'Efficiency Score Trend',
-        font: { color: '#e2e8f0', size: 18 }
-      },
-      paper_bgcolor: 'rgba(30, 41, 59, 0.5)',
-      plot_bgcolor: 'rgba(30, 41, 59, 0.3)',
-      xaxis: {
-        title: 'Record Number',
-        gridcolor: '#334155',
-        color: '#94a3b8'
-      },
-      yaxis: {
-        title: 'Efficiency Score',
-        gridcolor: '#334155',
-        color: '#94a3b8'
-      },
-      margin: { t: 50, r: 50, b: 50, l: 80 }
-    };
-
-    Plotly.newPlot(efficiencyChartRef.current, [efficiencyTrace], efficiencyLayout, { responsive: true });
-
-    // Line Comparison Chart (if All selected)
+    // Line comparison
+    let comparisonData = [];
     if (selectedLine === 'All' && lines.length > 0) {
-      const lineComparison = lines.map(line => {
+      comparisonData = lines.map(line => {
         const lineRecords = data.filter(row => row.Line_Name === line);
         return {
-          line: line,
+          line,
           totalEnergy: lineRecords.reduce((sum, row) => sum + parseFloat(row.Energy_Consumed_kWh), 0),
-          totalProduction: lineRecords.reduce((sum, row) => sum + parseFloat(row.Units_Produced), 0),
-          avgEfficiency: lineRecords.reduce((sum, row) => sum + parseFloat(row.Efficiency_Score), 0) / lineRecords.length
+          totalProduction: lineRecords.reduce((sum, row) => sum + parseFloat(row.Units_Produced), 0)
         };
       });
-
-      const energyBar = {
-        x: lineComparison.map(l => l.line),
-        y: lineComparison.map(l => l.totalEnergy),
-        type: 'bar',
-        name: 'Total Energy (kWh)',
-        marker: { color: '#22d3ee' }
-      };
-
-      const productionBar = {
-        x: lineComparison.map(l => l.line),
-        y: lineComparison.map(l => l.totalProduction),
-        type: 'bar',
-        name: 'Total Production',
-        marker: { color: '#10b981' }
-      };
-
-      const comparisonLayout = {
-        title: {
-          text: 'Production Line Comparison',
-          font: { color: '#e2e8f0', size: 18 }
-        },
-        paper_bgcolor: 'rgba(30, 41, 59, 0.5)',
-        plot_bgcolor: 'rgba(30, 41, 59, 0.3)',
-        xaxis: {
-          title: 'Production Line',
-          gridcolor: '#334155',
-          color: '#94a3b8'
-        },
-        yaxis: {
-          title: 'Value',
-          gridcolor: '#334155',
-          color: '#94a3b8'
-        },
-        legend: {
-          font: { color: '#e2e8f0' },
-          bgcolor: 'rgba(30, 41, 59, 0.8)'
-        },
-        barmode: 'group',
-        margin: { t: 50, r: 50, b: 80, l: 80 }
-      };
-
-      Plotly.newPlot(comparisonChartRef.current, [energyBar, productionBar], comparisonLayout, { responsive: true });
     }
 
-    // Anomaly Detection Chart
-    const anomalies = lineData.filter(row => row.Energy_Anomaly_Flag === 1 || row.Energy_Anomaly_Flag === '1');
-    const normalData = lineData.filter(row => row.Energy_Anomaly_Flag !== 1 && row.Energy_Anomaly_Flag !== '1');
+    // Anomaly data - sample for performance
+    const anomalyData = lineData
+      .filter((_, idx) => idx % step === 0)
+      .map((row) => ({
+        energy: parseFloat(row.Energy_Consumed_kWh),
+        production: parseFloat(row.Units_Produced),
+        isAnomaly: row.Energy_Anomaly_Flag === 1 || row.Energy_Anomaly_Flag === '1'
+      }));
 
-    const normalTrace = {
-      x: normalData.map(row => parseFloat(row.Energy_Consumed_kWh)),
-      y: normalData.map(row => parseFloat(row.Units_Produced)),
-      type: 'scatter',
-      mode: 'markers',
-      name: 'Normal',
-      marker: {
-        color: '#10b981',
-        size: 8,
-        opacity: 0.6
-      }
-    };
-
-    const anomalyTrace = {
-      x: anomalies.map(row => parseFloat(row.Energy_Consumed_kWh)),
-      y: anomalies.map(row => parseFloat(row.Units_Produced)),
-      type: 'scatter',
-      mode: 'markers',
-      name: 'Anomaly',
-      marker: {
-        color: '#ef4444',
-        size: 12,
-        symbol: 'x',
-        line: { width: 2 }
-      }
-    };
-
-    const productionLayout = {
-      title: {
-        text: 'Energy Anomaly Detection',
-        font: { color: '#e2e8f0', size: 18 }
-      },
-      paper_bgcolor: 'rgba(30, 41, 59, 0.5)',
-      plot_bgcolor: 'rgba(30, 41, 59, 0.3)',
-      xaxis: {
-        title: 'Energy Consumed (kWh)',
-        gridcolor: '#334155',
-        color: '#94a3b8'
-      },
-      yaxis: {
-        title: 'Units Produced',
-        gridcolor: '#334155',
-        color: '#94a3b8'
-      },
-      legend: {
-        font: { color: '#e2e8f0' },
-        bgcolor: 'rgba(30, 41, 59, 0.8)'
-      },
-      margin: { t: 50, r: 50, b: 50, l: 80 }
-    };
-
-    Plotly.newPlot(productionChartRef.current, [normalTrace, anomalyTrace], productionLayout, { responsive: true });
+    setChartData({ energy: energyData, comparison: comparisonData, anomaly: anomalyData });
   };
 
   const getLineStats = () => {
@@ -341,30 +171,76 @@ const LineDashboard = () => {
 
         {/* Charts */}
         <div className="space-y-6">
+          {/* Energy vs Production */}
           <Card className="bg-slate-800/50 backdrop-blur-sm border-slate-700">
             <CardContent className="p-6">
-              <div ref={energyChartRef} className="w-full h-[400px]"></div>
+              <h3 className="text-xl font-semibold text-white mb-4">Energy Consumption vs Production Output</h3>
+              <ResponsiveContainer width="100%" height={400}>
+                <LineChart data={chartData.energy}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                  <XAxis dataKey="record" stroke="#94a3b8" label={{ value: 'Record Number', position: 'insideBottom', offset: -5, fill: '#94a3b8' }} />
+                  <YAxis yAxisId="left" stroke="#22d3ee" label={{ value: 'Energy (kWh)', angle: -90, position: 'insideLeft', fill: '#22d3ee' }} />
+                  <YAxis yAxisId="right" orientation="right" stroke="#10b981" label={{ value: 'Units Produced', angle: 90, position: 'insideRight', fill: '#10b981' }} />
+                  <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px' }} />
+                  <Legend />
+                  <Line yAxisId="left" type="monotone" dataKey="energy" stroke="#22d3ee" name="Energy (kWh)" strokeWidth={2} dot={false} />
+                  <Line yAxisId="right" type="monotone" dataKey="production" stroke="#10b981" name="Units Produced" strokeWidth={2} dot={false} />
+                </LineChart>
+              </ResponsiveContainer>
             </CardContent>
           </Card>
 
+          {/* Efficiency and Anomaly */}
           <div className="grid md:grid-cols-2 gap-6">
             <Card className="bg-slate-800/50 backdrop-blur-sm border-slate-700">
               <CardContent className="p-6">
-                <div ref={efficiencyChartRef} className="w-full h-[350px]"></div>
+                <h3 className="text-xl font-semibold text-white mb-4">Efficiency Score Trend</h3>
+                <ResponsiveContainer width="100%" height={350}>
+                  <AreaChart data={chartData.energy}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                    <XAxis dataKey="record" stroke="#94a3b8" />
+                    <YAxis stroke="#94a3b8" />
+                    <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px' }} />
+                    <Area type="monotone" dataKey="efficiency" stroke="#22d3ee" fill="#22d3ee" fillOpacity={0.3} name="Efficiency Score" />
+                  </AreaChart>
+                </ResponsiveContainer>
               </CardContent>
             </Card>
 
             <Card className="bg-slate-800/50 backdrop-blur-sm border-slate-700">
               <CardContent className="p-6">
-                <div ref={productionChartRef} className="w-full h-[350px]"></div>
+                <h3 className="text-xl font-semibold text-white mb-4">Energy Anomaly Detection</h3>
+                <ResponsiveContainer width="100%" height={350}>
+                  <ScatterChart>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                    <XAxis dataKey="energy" stroke="#94a3b8" label={{ value: 'Energy (kWh)', position: 'insideBottom', offset: -5, fill: '#94a3b8' }} />
+                    <YAxis dataKey="production" stroke="#94a3b8" label={{ value: 'Units Produced', angle: -90, position: 'insideLeft', fill: '#94a3b8' }} />
+                    <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px' }} cursor={{ strokeDasharray: '3 3' }} />
+                    <Legend />
+                    <Scatter name="Normal" data={chartData.anomaly.filter(d => !d.isAnomaly)} fill="#10b981" />
+                    <Scatter name="Anomaly" data={chartData.anomaly.filter(d => d.isAnomaly)} fill="#ef4444" shape="cross" />
+                  </ScatterChart>
+                </ResponsiveContainer>
               </CardContent>
             </Card>
           </div>
 
-          {selectedLine === 'All' && (
+          {/* Line Comparison */}
+          {selectedLine === 'All' && chartData.comparison.length > 0 && (
             <Card className="bg-slate-800/50 backdrop-blur-sm border-slate-700">
               <CardContent className="p-6">
-                <div ref={comparisonChartRef} className="w-full h-[400px]"></div>
+                <h3 className="text-xl font-semibold text-white mb-4">Production Line Comparison</h3>
+                <ResponsiveContainer width="100%" height={400}>
+                  <BarChart data={chartData.comparison}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                    <XAxis dataKey="line" stroke="#94a3b8" />
+                    <YAxis stroke="#94a3b8" />
+                    <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px' }} />
+                    <Legend />
+                    <Bar dataKey="totalEnergy" fill="#22d3ee" name="Total Energy (kWh)" />
+                    <Bar dataKey="totalProduction" fill="#10b981" name="Total Production" />
+                  </BarChart>
+                </ResponsiveContainer>
               </CardContent>
             </Card>
           )}
