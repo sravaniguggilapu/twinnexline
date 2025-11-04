@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Insights - Nexline Manufacturing</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">⚡ Nexline Energy Monitor</div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="line-dashboard.html">Line Dashboard</a></li>
+                <li><a href="machine-health.html">Machine Health</a></li>
+                <li><a href="insights.html" class="active">Insights</a></li>
+                <li><a href="reports.html">Reports</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 style="margin: 30px 0; color: #00d4ff;">AI-Powered Insights</h1>
+        <p style="color: #b0d4e8; margin-bottom: 30px; font-size: 16px;">Automated recommendations based on data analysis</p>
+
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-icon">📊</div>
+                <div class="kpi-value" id="totalInsights">-</div>
+                <div class="kpi-label">Total Insights</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">⚠️</div>
+                <div class="kpi-value" id="criticalCount">-</div>
+                <div class="kpi-label">Critical Issues</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">🔴</div>
+                <div class="kpi-value" id="anomalyCount">-</div>
+                <div class="kpi-label">Anomalies Detected</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">💡</div>
+                <div class="kpi-value" id="recommendCount">-</div>
+                <div class="kpi-label">Recommendations</div>
+            </div>
+        </div>
+
+        <div id="insightsContainer">
+            <div class="loading">Analyzing data...</div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Nexline Manufacturing - Energy Efficiency Monitoring System</p>
+        </div>
+    </footer>
+
+    <script src="assets/js/data-loader.js"></script>
+    <script src="assets/js/insights.js"></script>
+</body>
+</html>

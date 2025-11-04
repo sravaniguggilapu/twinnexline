@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexline Manufacturing - Energy Efficiency Monitor</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">⚡ Nexline Energy Monitor</div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="line-dashboard.html">Line Dashboard</a></li>
+                <li><a href="machine-health.html">Machine Health</a></li>
+                <li><a href="insights.html">Insights</a></li>
+                <li><a href="reports.html">Reports</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <div class="container">
+            <h1>Energy Efficiency Monitoring</h1>
+            <p>Real-time digital twin for smart manufacturing</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-icon">⚡</div>
+                <div class="kpi-value" id="totalEnergy">-</div>
+                <div class="kpi-label">Total Energy (kWh)</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">📦</div>
+                <div class="kpi-value" id="totalProduction">-</div>
+                <div class="kpi-label">Units Produced</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">📊</div>
+                <div class="kpi-value" id="avgEfficiency">-</div>
+                <div class="kpi-label">Avg Efficiency Score</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">🌱</div>
+                <div class="kpi-value" id="totalCO2">-</div>
+                <div class="kpi-label">CO₂ Emissions (kg)</div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <h2>Production Lines Overview</h2>
+            <canvas id="lineComparisonChart"></canvas>
+        </div>
+
+        <div class="info-section">
+            <h2>About Digital Twin Technology</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Real-time Monitoring</h3>
+                    <p>Track energy consumption and production output across all manufacturing lines in real-time.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Machine Health</h3>
+                    <p>Monitor temperature, vibration, and performance metrics for all machines.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Anomaly Detection</h3>
+                    <p>Automatically identify unusual energy consumption patterns and equipment issues.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Data-Driven Insights</h3>
+                    <p>Get actionable recommendations based on comprehensive data analysis.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Nexline Manufacturing - Energy Efficiency Monitoring System</p>
+        </div>
+    </footer>
+
+    <script src="assets/js/data-loader.js"></script>
+    <script src="assets/js/home.js"></script>
+</body>
+</html>
