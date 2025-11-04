@@ -27,14 +27,14 @@ Average Efficiency = (Σ Efficiency_Score[i]) / n
 where:
   - i = all records in the dataset
   - n = total number of records
-  - Efficiency_Score is normalized to range [0, 1]
+  - Efficiency_Score is a ratio metric (typically 2.4 to 12.3)
 ```
-**Note**: Efficiency scores are automatically normalized to ensure they don't exceed 1.0.
+**Note**: Efficiency scores represent the ratio of output to input energy. Higher values indicate better efficiency.
 
-**Formula for normalization**:
-```javascript
-Normalized_Efficiency_Score = Math.min(Raw_Efficiency_Score, 1.0)
-```
+**Current Dataset Range**:
+- Minimum: 2.44
+- Maximum: 12.31
+- Average: 6.11
 
 ### 1.4 Total CO₂ Emissions
 ```
