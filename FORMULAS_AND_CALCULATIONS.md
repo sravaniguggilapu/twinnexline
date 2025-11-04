@@ -294,7 +294,7 @@ const value = parseFloat(row.field) || 0;
 3. **All temperature values are in Celsius (°C)**
 4. **All time values are in minutes**
 5. **All mass values (CO₂) are in kilograms (kg)**
-6. **Efficiency scores are dimensionless ratios between 0 and 1**
+6. **Efficiency scores are ratio metrics (typical range: 2.4 to 12.3)**
 
 ---
 
