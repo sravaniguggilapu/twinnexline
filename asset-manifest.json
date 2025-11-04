@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/twinnexline/static/css/main.57bdbe88.css",
-    "main.js": "/twinnexline/static/js/main.857dd289.js",
+    "main.js": "/twinnexline/static/js/main.0b177072.js",
     "index.html": "/twinnexline/index.html",
     "main.57bdbe88.css.map": "/twinnexline/static/css/main.57bdbe88.css.map",
-    "main.857dd289.js.map": "/twinnexline/static/js/main.857dd289.js.map"
+    "main.0b177072.js.map": "/twinnexline/static/js/main.0b177072.js.map"
   },
   "entrypoints": [
     "static/css/main.57bdbe88.css",
-    "static/js/main.857dd289.js"
+    "static/js/main.0b177072.js"
   ]
 }
