@@ -41,12 +41,12 @@ const Insights = () => {
         });
       }
 
-      if (avgEfficiency < 0.85) {
+      if (avgEfficiency < 5.0) {
         generatedInsights.push({
           type: 'low_efficiency',
           severity: 'warning',
           title: `Low Efficiency Score - ${line}`,
-          description: `${line} has below-average efficiency (${(avgEfficiency * 100).toFixed(1)}%). This indicates potential operational inefficiencies.`,
+          description: `${line} has below-average efficiency score (${avgEfficiency.toFixed(2)}). This indicates potential operational inefficiencies.`,
           impact: 'High',
           recommendation: 'Review machine settings and operator training programs'
         });
