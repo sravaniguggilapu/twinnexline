@@ -1,10 +1,4 @@
-# Nexline Energy Efficiency Monitoring System 🏭⚡
 
-A professional energy efficiency monitoring dashboard for smart manufacturing, built with React and powered by real industrial data.
-
-![Made with Emergent](https://img.shields.io/badge/Made%20with-Emergent-00D9FF?style=for-the-badge)
-
-## ✨ Features
 
 - 📊 **5 Interactive Dashboards** - Home, Line Analytics, Machine Health, AI Insights, Reports
 - 📈 **Live Charts** - Interactive Recharts visualizations  
@@ -43,24 +37,5 @@ yarn start
 ## 🛠️ Tech Stack
 
 React 19 • Recharts • TailwindCSS • Shadcn UI • XLSX.js
-
-## 🚀 Deploy
-
-```bash
-# GitHub Pages
-yarn deploy
-
-# Vercel
-vercel --prod
-
-# Netlify  
-netlify deploy --prod
-```
-
-## 🙏 Credits
-
-Built with [Emergent](https://emergent.sh) - AI-powered development platform
-
----
 
 **Made with ❤️ using Emergent**
