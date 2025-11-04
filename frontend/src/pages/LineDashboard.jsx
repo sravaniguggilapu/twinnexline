@@ -59,14 +59,12 @@ const LineDashboard = () => {
       });
     }
 
-    // Anomaly data - sample for performance
-    const anomalyData = lineData
-      .filter((_, idx) => idx % step === 0)
-      .map((row) => ({
-        energy: parseFloat(row.Energy_Consumed_kWh),
-        production: parseFloat(row.Units_Produced),
-        isAnomaly: row.Energy_Anomaly_Flag === 1 || row.Energy_Anomaly_Flag === '1'
-      }));
+    // Anomaly data - use all data for accurate anomaly detection
+    const anomalyData = lineData.map((row) => ({
+      energy: parseFloat(row.Energy_Consumed_kWh),
+      production: parseFloat(row.Units_Produced),
+      isAnomaly: row.Energy_Anomaly_Flag === 1 || row.Energy_Anomaly_Flag === '1'
+    }));
 
     setChartData({ energy: energyData, comparison: comparisonData, anomaly: anomalyData });
   };
