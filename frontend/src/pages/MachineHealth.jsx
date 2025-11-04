@@ -32,161 +32,50 @@ const MachineHealth = () => {
 
   useEffect(() => {
     if (machineData.length > 0) {
-      renderCharts();
+      prepareChartData();
     }
   }, [machineData]);
 
-  const renderCharts = () => {
-    // Temperature Trend
-    const tempTrace = {
-      x: machineData.map((_, idx) => idx + 1),
-      y: machineData.map(row => parseFloat(row.Machine_Temperature)),
-      type: 'scatter',
-      mode: 'lines+markers',
-      name: 'Machine Temp',
-      line: { color: '#ef4444', width: 2 },
-      marker: { size: 6 }
-    };
+  const prepareChartData = () => {
+    // Sample data for performance - take every Nth record
+    const step = Math.max(1, Math.floor(machineData.length / 100));
+    const sampledData = machineData.filter((_, idx) => idx % step === 0);
 
-    const ambientTrace = {
-      x: machineData.map((_, idx) => idx + 1),
-      y: machineData.map(row => parseFloat(row.Ambient_Temperature)),
-      type: 'scatter',
-      mode: 'lines',
-      name: 'Ambient Temp',
-      line: { color: '#94a3b8', width: 2, dash: 'dot' }
-    };
+    // Temperature data
+    const tempData = sampledData.map((row, idx) => ({
+      record: idx + 1,
+      machineTemp: parseFloat(row.Machine_Temperature),
+      ambientTemp: parseFloat(row.Ambient_Temperature)
+    }));
 
-    const tempLayout = {
-      title: {
-        text: 'Temperature Monitoring',
-        font: { color: '#e2e8f0', size: 16 }
-      },
-      paper_bgcolor: 'rgba(30, 41, 59, 0.5)',
-      plot_bgcolor: 'rgba(30, 41, 59, 0.3)',
-      xaxis: {
-        title: 'Record',
-        gridcolor: '#334155',
-        color: '#94a3b8'
-      },
-      yaxis: {
-        title: 'Temperature (°C)',
-        gridcolor: '#334155',
-        color: '#94a3b8'
-      },
-      legend: {
-        font: { color: '#e2e8f0' },
-        bgcolor: 'rgba(30, 41, 59, 0.8)'
-      },
-      margin: { t: 40, r: 50, b: 50, l: 60 }
-    };
+    // Vibration data with color coding
+    const vibrationData = sampledData.map((row, idx) => {
+      const vib = parseFloat(row.Vibration_Level);
+      return {
+        record: idx + 1,
+        vibration: vib,
+        fill: vib > 20 ? '#ef4444' : vib > 10 ? '#f59e0b' : '#10b981'
+      };
+    });
 
-    Plotly.newPlot(tempChartRef.current, [tempTrace, ambientTrace], tempLayout, { responsive: true });
+    // Efficiency data
+    const efficiencyData = sampledData.map((row, idx) => ({
+      record: idx + 1,
+      efficiency: parseFloat(row.Efficiency_Score)
+    }));
 
-    // Vibration Level
-    const vibrationTrace = {
-      x: machineData.map((_, idx) => idx + 1),
-      y: machineData.map(row => parseFloat(row.Vibration_Level)),
-      type: 'bar',
-      marker: {
-        color: machineData.map(row => {
-          const vib = parseFloat(row.Vibration_Level);
-          if (vib > 20) return '#ef4444';
-          if (vib > 10) return '#f59e0b';
-          return '#10b981';
-        })
-      }
-    };
+    // Downtime data
+    const downtimeData = sampledData.map((row, idx) => ({
+      record: idx + 1,
+      downtime: parseFloat(row.Downtime_Minutes)
+    }));
 
-    const vibrationLayout = {
-      title: {
-        text: 'Vibration Level Analysis',
-        font: { color: '#e2e8f0', size: 16 }
-      },
-      paper_bgcolor: 'rgba(30, 41, 59, 0.5)',
-      plot_bgcolor: 'rgba(30, 41, 59, 0.3)',
-      xaxis: {
-        title: 'Record',
-        gridcolor: '#334155',
-        color: '#94a3b8'
-      },
-      yaxis: {
-        title: 'Vibration Level',
-        gridcolor: '#334155',
-        color: '#94a3b8'
-      },
-      margin: { t: 40, r: 50, b: 50, l: 60 }
-    };
-
-    Plotly.newPlot(vibrationChartRef.current, [vibrationTrace], vibrationLayout, { responsive: true });
-
-    // Efficiency Score
-    const efficiencyTrace = {
-      x: machineData.map((_, idx) => idx + 1),
-      y: machineData.map(row => parseFloat(row.Efficiency_Score)),
-      type: 'scatter',
-      mode: 'lines',
-      fill: 'tozeroy',
-      line: { color: '#22d3ee', width: 2 },
-      fillcolor: 'rgba(34, 211, 238, 0.2)'
-    };
-
-    const efficiencyLayout = {
-      title: {
-        text: 'Efficiency Score Over Time',
-        font: { color: '#e2e8f0', size: 16 }
-      },
-      paper_bgcolor: 'rgba(30, 41, 59, 0.5)',
-      plot_bgcolor: 'rgba(30, 41, 59, 0.3)',
-      xaxis: {
-        title: 'Record',
-        gridcolor: '#334155',
-        color: '#94a3b8'
-      },
-      yaxis: {
-        title: 'Efficiency Score',
-        gridcolor: '#334155',
-        color: '#94a3b8'
-      },
-      margin: { t: 40, r: 50, b: 50, l: 60 }
-    };
-
-    Plotly.newPlot(efficiencyChartRef.current, [efficiencyTrace], efficiencyLayout, { responsive: true });
-
-    // Downtime Analysis
-    const downtimeTrace = {
-      x: machineData.map((_, idx) => idx + 1),
-      y: machineData.map(row => parseFloat(row.Downtime_Minutes)),
-      type: 'scatter',
-      mode: 'markers',
-      marker: {
-        size: machineData.map(row => Math.max(8, parseFloat(row.Downtime_Minutes) * 2)),
-        color: '#f59e0b',
-        opacity: 0.6
-      }
-    };
-
-    const downtimeLayout = {
-      title: {
-        text: 'Downtime Distribution',
-        font: { color: '#e2e8f0', size: 16 }
-      },
-      paper_bgcolor: 'rgba(30, 41, 59, 0.5)',
-      plot_bgcolor: 'rgba(30, 41, 59, 0.3)',
-      xaxis: {
-        title: 'Record',
-        gridcolor: '#334155',
-        color: '#94a3b8'
-      },
-      yaxis: {
-        title: 'Downtime (minutes)',
-        gridcolor: '#334155',
-        color: '#94a3b8'
-      },
-      margin: { t: 40, r: 50, b: 50, l: 60 }
-    };
-
-    Plotly.newPlot(downtimeChartRef.current, [downtimeTrace], downtimeLayout, { responsive: true });
+    setChartData({
+      temp: tempData,
+      vibration: vibrationData,
+      efficiency: efficiencyData,
+      downtime: downtimeData
+    });
   };
 
   const getMachineInfo = () => {
