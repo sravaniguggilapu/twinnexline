@@ -37,4 +37,3 @@ yarn start
 
 React 19 • Recharts • TailwindCSS • Shadcn UI • XLSX.js
 
-**Made with ❤️ using Emergent**
