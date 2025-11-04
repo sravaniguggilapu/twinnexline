@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Badge } from '../components/ui/badge';
 import { useData } from '../context/DataContext';
-import Plotly from 'plotly.js-dist-min';
+import { LineChart, Line, BarChart, Bar, AreaChart, Area, ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Gauge, Thermometer, Activity, AlertTriangle, CheckCircle, Clock } from 'lucide-react';
 
 const MachineHealth = () => {
