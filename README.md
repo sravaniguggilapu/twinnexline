@@ -7,7 +7,6 @@
 - 📄 **CSV Export** - Download comprehensive reports
 - ⚡ **100% Client-side** - No backend required
 
-## 🚀 Quick Start
 
 ```bash
 cd frontend
