@@ -240,25 +240,67 @@ const MachineHealth = () => {
             <div className="grid md:grid-cols-2 gap-6">
               <Card className="bg-slate-800/50 backdrop-blur-sm border-slate-700">
                 <CardContent className="p-6">
-                  <div ref={tempChartRef} className="w-full h-[300px]"></div>
+                  <h3 className="text-lg font-semibold text-white mb-4">Temperature Monitoring</h3>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <LineChart data={chartData.temp}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                      <XAxis dataKey="record" stroke="#94a3b8" />
+                      <YAxis stroke="#94a3b8" label={{ value: 'Temperature (°C)', angle: -90, position: 'insideLeft', fill: '#94a3b8' }} />
+                      <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px' }} />
+                      <Legend />
+                      <Line type="monotone" dataKey="machineTemp" stroke="#ef4444" name="Machine Temp" strokeWidth={2} dot={false} />
+                      <Line type="monotone" dataKey="ambientTemp" stroke="#94a3b8" name="Ambient Temp" strokeWidth={2} strokeDasharray="5 5" dot={false} />
+                    </LineChart>
+                  </ResponsiveContainer>
                 </CardContent>
               </Card>
 
               <Card className="bg-slate-800/50 backdrop-blur-sm border-slate-700">
                 <CardContent className="p-6">
-                  <div ref={vibrationChartRef} className="w-full h-[300px]"></div>
+                  <h3 className="text-lg font-semibold text-white mb-4">Vibration Level Analysis</h3>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <BarChart data={chartData.vibration}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                      <XAxis dataKey="record" stroke="#94a3b8" />
+                      <YAxis stroke="#94a3b8" />
+                      <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px' }} />
+                      <Bar dataKey="vibration" name="Vibration Level">
+                        {chartData.vibration.map((entry, index) => (
+                          <Bar key={`bar-${index}`} fill={entry.fill} />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  </ResponsiveContainer>
                 </CardContent>
               </Card>
 
               <Card className="bg-slate-800/50 backdrop-blur-sm border-slate-700">
                 <CardContent className="p-6">
-                  <div ref={efficiencyChartRef} className="w-full h-[300px]"></div>
+                  <h3 className="text-lg font-semibold text-white mb-4">Efficiency Score Over Time</h3>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <AreaChart data={chartData.efficiency}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                      <XAxis dataKey="record" stroke="#94a3b8" />
+                      <YAxis stroke="#94a3b8" />
+                      <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px' }} />
+                      <Area type="monotone" dataKey="efficiency" stroke="#22d3ee" fill="#22d3ee" fillOpacity={0.3} name="Efficiency Score" />
+                    </AreaChart>
+                  </ResponsiveContainer>
                 </CardContent>
               </Card>
 
               <Card className="bg-slate-800/50 backdrop-blur-sm border-slate-700">
                 <CardContent className="p-6">
-                  <div ref={downtimeChartRef} className="w-full h-[300px]"></div>
+                  <h3 className="text-lg font-semibold text-white mb-4">Downtime Distribution</h3>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <ScatterChart>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                      <XAxis dataKey="record" stroke="#94a3b8" />
+                      <YAxis dataKey="downtime" stroke="#94a3b8" label={{ value: 'Downtime (min)', angle: -90, position: 'insideLeft', fill: '#94a3b8' }} />
+                      <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px' }} />
+                      <Scatter data={chartData.downtime} fill="#f59e0b" name="Downtime" />
+                    </ScatterChart>
+                  </ResponsiveContainer>
                 </CardContent>
               </Card>
             </div>
