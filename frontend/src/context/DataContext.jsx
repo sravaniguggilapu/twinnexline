@@ -30,13 +30,7 @@ export const DataProvider = ({ children }) => {
       const worksheet = workbook.Sheets[sheetName];
       const jsonData = XLSX.utils.sheet_to_json(worksheet);
       
-      // Normalize efficiency scores to be <= 1.0
-      const normalizedData = jsonData.map(row => ({
-        ...row,
-        Efficiency_Score: Math.min(parseFloat(row.Efficiency_Score) || 0, 1.0)
-      }));
-      
-      setData(normalizedData);
+      setData(jsonData);
       setLoading(false);
     } catch (err) {
       console.error('Error loading dataset:', err);
