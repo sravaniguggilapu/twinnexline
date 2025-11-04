@@ -140,10 +140,11 @@ IF (Avg_Energy_per_Unit > 10 kWh/unit) THEN
 
 ### 5.2 Low Efficiency Detection
 ```
-IF (Avg_Efficiency < 0.85) THEN
+IF (Avg_Efficiency < 5.0) THEN
   Classification: "Low Efficiency"
   Severity: Warning
 ```
+**Note**: Efficiency threshold of 5.0 is based on the dataset's average of 6.11.
 
 ### 5.3 Critical Machine Detection
 ```
