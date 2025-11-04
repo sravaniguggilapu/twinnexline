@@ -11,11 +11,7 @@ const MachineHealth = () => {
   const [selectedMachine, setSelectedMachine] = useState('');
   const [machines, setMachines] = useState([]);
   const [machineData, setMachineData] = useState([]);
-  
-  const tempChartRef = useRef(null);
-  const vibrationChartRef = useRef(null);
-  const efficiencyChartRef = useRef(null);
-  const downtimeChartRef = useRef(null);
+  const [chartData, setChartData] = useState({ temp: [], vibration: [], efficiency: [], downtime: [] });
 
   useEffect(() => {
     if (data && data.length > 0) {
