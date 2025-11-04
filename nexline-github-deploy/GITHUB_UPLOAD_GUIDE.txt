@@ -1,0 +1,97 @@
+===============================================
+   UPLOAD THESE FILES TO GITHUB - STEP BY STEP
+===============================================
+
+YOU ARE SEEING THE WRONG WEBSITE BECAUSE YOU UPLOADED THE REACT APP!
+
+This is the CORRECT simple HTML website. Follow these steps:
+
+STEP 1: Delete Old Repository (or Create New One)
+--------------------------------------------------
+Go to your GitHub repository settings and delete it.
+OR create a brand new repository with a different name.
+
+
+STEP 2: Upload These Exact Files
+---------------------------------
+Upload ALL files keeping this EXACT structure:
+
+ROOT LEVEL (upload to repository root):
+✅ index.html
+✅ line-dashboard.html
+✅ machine-health.html
+✅ insights.html
+✅ reports.html
+✅ README.md
+✅ DEPLOYMENT.md
+
+CREATE FOLDER: assets/css/
+✅ style.css
+
+CREATE FOLDER: assets/js/
+✅ data-loader.js
+✅ home.js
+✅ line-dashboard.js
+✅ machine-health.js
+✅ insights.js
+✅ reports.js
+
+CREATE FOLDER: assets/data/
+✅ complete_energy_dataset_2700.xlsx
+
+
+STEP 3: Enable GitHub Pages
+----------------------------
+1. Go to repository Settings
+2. Click "Pages" in sidebar
+3. Source: Select "main" branch
+4. Folder: Select "/ (root)"
+5. Click Save
+6. Wait 2-3 minutes
+7. Your site will be at: https://YOUR_USERNAME.github.io/REPO_NAME
+
+
+WHAT YOU SHOULD SEE:
+-------------------
+✅ Clean dark blue/cyan design
+✅ NO "Made with Emergent" badge
+✅ NO instructions about "yarn install"
+✅ 5 navigation links: Home, Line Dashboard, Machine Health, Insights, Reports
+✅ KPI cards showing: 135.97K kWh, 808.62K units, 6.11 efficiency
+
+
+WHAT YOU SHOULD NOT SEE:
+-----------------------
+❌ "Made with EMERGENT" badge
+❌ "Built with React" text
+❌ Instructions about running yarn or npm
+❌ Any installation instructions
+
+
+QUICK CHECK:
+-----------
+After uploading, check if index.html contains this at the top:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexline Manufacturing - Energy Efficiency Monitor</title>
+
+If you see React, Redux, or yarn mentioned, YOU UPLOADED THE WRONG FILES!
+
+
+NEED HELP?
+----------
+The files you need are in: /app/nexline-website/
+NOT in: /app/frontend/
+
+The simple website has:
+- 5 HTML files at root level
+- assets/ folder with css, js, data
+- Uses Chart.js (loaded from CDN)
+- NO package.json
+- NO node_modules
+- NO build scripts
+
+===============================================
