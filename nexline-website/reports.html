@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - Nexline Manufacturing</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">⚡ Nexline Energy Monitor</div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="line-dashboard.html">Line Dashboard</a></li>
+                <li><a href="machine-health.html">Machine Health</a></li>
+                <li><a href="insights.html">Insights</a></li>
+                <li><a href="reports.html" class="active">Reports</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin: 30px 0;">
+            <h1 style="color: #00d4ff;">Energy Efficiency Report</h1>
+            <button class="btn" onclick="downloadCSV()">Download CSV Report</button>
+        </div>
+
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-icon">⚡</div>
+                <div class="kpi-value" id="reportEnergy">-</div>
+                <div class="kpi-label">Total Energy</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">📦</div>
+                <div class="kpi-value" id="reportProduction">-</div>
+                <div class="kpi-label">Production</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">💵</div>
+                <div class="kpi-value" id="reportCost">-</div>
+                <div class="kpi-label">Energy Cost</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">🌱</div>
+                <div class="kpi-value" id="reportCO2">-</div>
+                <div class="kpi-label">CO₂ Emissions</div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <h2>Production Line Performance</h2>
+            <table id="linePerformanceTable">
+                <thead>
+                    <tr>
+                        <th>Production Line</th>
+                        <th>Total Energy (kWh)</th>
+                        <th>Production</th>
+                        <th>Avg Efficiency</th>
+                        <th>Energy/Unit</th>
+                    </tr>
+                </thead>
+                <tbody id="linePerformanceBody">
+                    <tr><td colspan="5" class="loading">Loading data...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="chart-container">
+            <h2>Top 5 Inefficiency Sources</h2>
+            <div id="inefficiencySources">
+                <div class="loading">Analyzing...</div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <h2>Improvement Recommendations</h2>
+            <div id="recommendations">
+                <div class="loading">Generating recommendations...</div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Nexline Manufacturing - Energy Efficiency Monitoring System</p>
+        </div>
+    </footer>
+
+    <script src="assets/js/data-loader.js"></script>
+    <script src="assets/js/reports.js"></script>
+</body>
+</html>
